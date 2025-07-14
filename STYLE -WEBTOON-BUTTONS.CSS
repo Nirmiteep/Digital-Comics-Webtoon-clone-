@@ -1,0 +1,79 @@
+    <!doctype html>
+<html lang="en">
+  <head>
+    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <title>WEBTOON-CLONE</title>
+    
+<!-- "TRENDING & POPULAR" BUTTON STYLING -->
+     <!-- <link rel="stylesheet" href="STYLE -WEBTOON-BUTTONS.CSS"> -->
+
+ 
+  </head>
+  <body>
+   <!-- LOGO -->
+    <img src="https://1000logos.net/wp-content/uploads/2024/08/Webtoon-Emblem-2048x1152.png" class="LOGO" alt="LOGO" STYLE="WIDTH:100PX;HEIGHT:10%">
+    <!-- NAVIGATION BUTTONS -->
+<NAV>
+   <ul class="nav justify-content-center">
+  <li class="nav-item">
+    <a class="nav-link active" aria-current="page" href="#">ORIGINALS</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#">CATEGORIES </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#">RANKINGS</a>
+  </li>
+   <li class="nav-item">
+    <a class="nav-link" href="#">CANVAS</a>
+  </li>
+  
+</ul>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+
+    <!-- OFFCANVAS  -->
+ <div class="offcanvas offcanvas-end bg-dark" tabindex="-1" id="offcanvasRight" 
+        aria-labelledby="offcanvasRightLabel">
+        <div class="offcanvas-header">
+          <h5 id="offcanvasRightLabel">ANIMAEVERSE</h5>
+          <button type="button" class="btn-close text-reset btn-close-white" data-bs-dismiss="offcanvas"
+            aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body bg-dark">
+
+
+
+          <ul class="list-group bg-WHITE text-DARK">
+            <li class="list-group-item bg-WHITE text-DARK"> LOGIN</li>
+            <li class="list-group-item bg-WHITE text-DARK"> SIGN IN</li>
+            <li class="list-group-item bg-WHITE text-DARK"> PUBLISH </li>
+  
+
+          </ul>
+        </div> 
+      </div>
+    </div>
+
+    </NAV>
+
+   <BR>
+
+<!-- BUTTONS -->
+
+ <div class="button-container">
+        <button class="trending-button active">Trending</button>
+        <button class="popular-button">Popular</button>
+
+
+
+  </body>
+</html>

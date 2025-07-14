@@ -1,0 +1,721 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+  <title>WEBTOON-CLONE</title>
+
+  <style>
+    /* Basic styling for the buttons to match the Webtoon aesthetic */
+    .button-container {
+      display: flex;
+      /* Use flexbox for horizontal alignment */
+      align-items: center;
+      /* Vertically align items */
+      gap: 8px;
+      /* Space between the buttons */
+      margin-top: 20px;
+      /* Add some space from the element above */
+      margin-left: 10px;
+      /* Adjust left margin as needed to align with other content */
+    }
+
+    .trending-button,
+    .popular-button {
+      padding: 8px 18px;
+      /* Adjust padding for desired button size */
+      border: 1px solid #ccc;
+      /* Light grey border */
+      border-radius: 20px;
+      /* More rounded corners for pill shape */
+      background-color: #f0f0f0;
+      /* Light background */
+      color: #555;
+      /* Default text color */
+      font-size: 14px;
+      /* Adjust font size */
+      font-weight: 600;
+      /* Slightly bolder text */
+     
+      text-decoration: none;
+      /* Remove underline from links */
+    }
+
+    /* Styling for the currently active/selected button */
+    .trending-button.active,
+    .popular-button.active {
+      background-color: #000;
+      /* Black background for active button */
+      color: #fff;
+      /* White text for active button */
+      border-color: #000;
+      /* Black border for active button */
+    }
+ 
+    /* Hover effect for both buttons (only if not active) */
+    .trending-button:not(.active):hover,
+    .popular-button:not(.active):hover {
+      background-color: #e6e6e6;
+      /* Slightly darker grey on hover */
+      border-color: #b3b3b3;
+    }
+
+    /* Styling for the H1 "Trending & Popular Series" text */
+    .section-title {
+      font-size: 24px;
+      /* Adjust as needed */
+      font-weight: 700;
+      color: #333;
+      margin-left: 20px;
+      /* Align with buttons */
+      margin-bottom: 15px;
+      /* Space between title and buttons */
+    }
+
+    /* CSS for content sections trending & popular section  */
+    .content-section {
+      display: none;
+      /* Hide all content sections by default */
+      padding: 20px;
+      margin-left: 20px;
+      /* Align content with buttons/title */
+     
+    }
+
+    .content-section.active-content {
+      display: block;
+      /* Show the active content section */
+    }
+
+    /* Basic styling for the list items - adjust as needed */
+    .content-section ul {
+      list-style: none;
+      /* Remove default bullet points */
+      padding: 0;
+    }
+
+    .content-section li {
+      padding: 8px 0;
+      border-bottom: 1px solid #eee;
+      font-size: 16px;
+      color: #333;
+    }
+
+    .content-section li:last-child {
+      border-bottom: none;
+      /* No border for the last item */
+    }
+
+
+    .LOGO {
+    display: block; /* Make it a block-level element */
+    margin-left: auto; /* Push it to the right */
+    margin-right: auto; /* Push it to the left */
+    /* Or simply margin: 0 auto; if no top/bottom margin is specified in inline style */
+}
+
+
+/* cards styling */
+/* --- Comic Cards --- */
+.row.row-cols-md-3 {
+  padding: 20px;
+  gap: 20px; /* Reduced gap between cards to 20px */
+  justify-content: center; /* Center the cards if there aren't enough to fill a row */
+  margin-left: auto; /* Center the row itself */
+  margin-right: auto; /* Center the row itself */
+  max-width: 1200px; /* Limit width for better layout on large screens */
+}
+
+.col {
+  display: flex; /* Ensure card takes full height of column */
+  margin-bottom: 0; /* Removed bottom margin, gap handles spacing */
+}
+
+.card {
+  border: 1px solid #eee;
+  border-radius: 8px;
+  overflow: hidden; /* Hide overflowing content */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* More pronounced shadow */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100%; /* Ensure cards are same height */
+  width: 100%; /* Ensure card takes full width of its column */
+}
+
+.card:hover {
+  transform: translateY(-5px); /* Lift card on hover */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12); /* Stronger shadow on hover */
+}
+
+.card-img-top {
+  width: 100%;
+  height: 600px; /* Fixed height for consistent image size */
+  object-fit: cover; /* Cover the area, cropping if necessary */
+  border-bottom: 1px solid #eee; /* Separator for image and body */
+}
+
+.card-body {
+  padding: 15px;
+  background-color: #fff;
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.card-body a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.card-body a:hover .card-title {
+  color: #007bff; /* Highlight title on hover */
+}
+
+/* Responsive adjustments */
+@media (max-width: 991px) { /* Adjust for medium screens to show 2 columns */
+  .row.row-cols-md-3 {
+    grid-template-columns: repeat(2, 1fr); /* Two columns on md screens */
+    gap: 20px;
+  }
+}
+
+@media (max-width: 767px) { /* Adjust for small screens to show 1 column */
+  .row.row-cols-md-3 {
+    padding: 10px;
+    grid-template-columns: 1fr; /* Single column on extra small screens */
+  }
+  .card-img-top {
+    height: 300px; /* Adjust image height for smaller screens */
+  }
+}
+
+
+/* --- Footer --- */
+.card.text-center.footer-card { /* Added a unique class for footer card */
+  background-color: #333; /* Darker background for footer */
+  color: #fff;
+  border-radius: 0; /* Remove border radius */
+  margin-top: 40px; /* Space above footer */
+  width: 100%; /* Full width */
+  padding: 30px 20px; /* Add padding */
+}
+
+.footer-card .card-header {
+  font-size: 1.2em !important; /* Adjust font size */
+  border-bottom: 1px solid #555;
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+}
+
+.footer-card .card-body .bi {
+  font-size: 28px; /* Larger social icons */
+  color: #2b2828; /* Changed to lighter gray for better contrast */
+  margin: 0 15px;
+  transition: color 0.3s ease;
+}
+
+.footer-card .card-body .bi:hover {
+  color: #3dd318; /* White on hover */
+}
+
+.footer-card .card-body .bt {
+  display: inline-block; /* Allow spacing between buttons */
+  margin: 10px 15px; /* Spacing for footer links */
+  color: #bbb; /* Changed to lighter gray for better contrast */
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.footer-card .card-body .bt:hover {
+  color: #0ed722;
+}
+
+.footer-card .LOGO {
+  width: 200px; /* Smaller logo in footer */
+  height: auto;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  opacity: 0.8; /* Slightly less prominent */
+}
+
+
+
+
+/* Styling for the search input and button in the navbar */
+.form-control {
+  border-radius: 20px; /* Rounded search input */
+  border: 1px solid #ddd;
+  padding-left: 15px;
+}
+
+.btn-outline-success {
+  border-radius: 20px;
+  border-color: #000;
+  color: #000;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-outline-success:hover {
+  background-color: #000;
+  color: #fff;
+}
+
+/* Styles for Autocomplete Suggestions */
+#autocompleteSuggestions {
+  max-height: 300px; /* Limit height of the dropdown */
+  overflow-y: auto; /* Add scroll if too many suggestions */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Soft shadow for the dropdown */
+  border-radius: 8px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+}
+
+#autocompleteSuggestions .list-group-item {
+  cursor: pointer;
+  padding: 10px 15px;
+  border: none; /* Remove default list-group-item border */
+  border-bottom: 1px solid #eee; /* Add subtle separator */
+  color: #333;
+}
+
+#autocompleteSuggestions .list-group-item:last-child {
+  border-bottom: none; /* No border for the last item */
+}
+
+#autocompleteSuggestions .list-group-item:hover,
+#autocompleteSuggestions .list-group-item.active { /* For keyboard navigation if implemented */
+  background-color: #f0f0f0;
+  color: #000;
+}
+
+
+  </style>
+</head>
+
+<body>
+  
+  <nav class="navbar navbar-expand-lg navbar-light ">
+    <!-- <div class="container-fluid"> -->
+      <img src="https://1000logos.net/wp-content/uploads/2024/08/Webtoon-Emblem-2048x1152.png" class="LOGO" alt="LOGO"
+        STYLE="WIDTH:100PX;HEIGHT:10%; margin-left: 20px; margin-top: 20px;">
+      <!-- <a class="navbar-brand" href="#">Navbar scroll</a> -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll"
+        aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+
+      </button>
+      <div class="collapse navbar-collapse" id="navbarScroll">
+        <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Originals</a>
+          </li>
+
+
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              Category
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
+              <li><a class="dropdown-item" href="#">Action</a>
+              </li>
+              <li><a class="dropdown-item" href="#">Horror</a>
+              </li>
+              <!-- <li><hr class="dropdown-divider"></li> -->
+              <li><a class="dropdown-item" href="#">Sci-Fi</a></li>
+            </ul>
+          </li>
+
+
+
+
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              Account
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
+              <li><a class="dropdown-item" href="login pagewebtoon.html">Login</a></li>
+
+
+              <!-- <li><a class="dropdown-item" href="#">Publisher</a></li> -->
+              <!-- <li><hr class="dropdown-divider"></li> -->
+              <li><a class="dropdown-item" href="signupwebtoon.html">Sign Up</a></li>
+            </ul>
+          </li>
+
+        </ul>
+        
+
+
+
+
+<form class="d-flex position-relative"> <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="seriesSearchInput">
+  <button class="btn btn-outline-success" type="submit">Search</button>
+
+  <div id="autocompleteSuggestions" class="list-group position-absolute w-100 mt-1" style="z-index: 1000; display: none; top: 100%;">
+    </div>
+</form>
+
+
+
+
+
+
+
+      </div>
+    </div>
+  </nav>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+
+  <div class="offcanvas offcanvas-end bg-dark" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+    <div class="offcanvas-header">
+      <h5 id="offcanvasRightLabel">ANIMAEVERSE</h5>
+      <button type="button" class="btn-close text-reset btn-close-white" data-bs-dismiss="offcanvas"
+        aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body bg-dark">
+      <ul class="list-group bg-WHITE text-DARK">
+        <li class="list-group-item bg-WHITE text-DARK"> LOGIN</li>
+        <li class="list-group-item bg-WHITE text-DARK"> SIGN IN</li>
+        <li class="list-group-item bg-WHITE text-DARK"> PUBLISH </li>
+      </ul>
+    </div>
+  </div>
+
+  <BR>
+
+  <h1 class="section-title">Trending & Popular Series</h1>
+
+  <div class="button-container">
+    <a class="trending-button active" id="trendingBtn" href="BOOTSTRAP(WEBGTOON_CLONE).HTML">Trending</a>
+    <a class="popular-button" id="popularBtn" href="popularsection.html">Popular</a>
+  </div>
+
+  <div id="trendingContent" class="content-section active-content">
+    <h3>Currently Trending Series</h3>
+
+  </div>
+
+  <div id="popularContent" class="content-section">
+    <h3>Most Popular Series</h3>
+
+
+
+
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Get references to the buttons
+      const trendingBtn = document.getElementById('trendingBtn');
+      const popularBtn = document.getElementById('popularBtn');
+
+      // Get references to the content sections
+      const trendingContent = document.getElementById('trendingContent');
+      const popularContent = document.getElementById('popularContent');
+
+      // Function to handle the button and content switching
+      function switchContent(clickedButton, otherButton, clickedContent, otherContent) {
+        // Update button styles
+        clickedButton.classList.add('active');
+        otherButton.classList.remove('active');
+
+        // Update content visibility
+        clickedContent.classList.add('active-content');
+        otherContent.classList.remove('active-content');
+      }
+
+      // Add event listener for the Trending button
+      trendingBtn.addEventListener('click', function () {
+        switchContent(trendingBtn, popularBtn, trendingContent, popularContent);
+      });
+
+      // Add event listener for the Popular button
+      popularBtn.addEventListener('click', function () {
+        switchContent(popularBtn, trendingBtn, popularContent, trendingContent);
+      });
+
+      // Initial state: Ensure Trending is active and its content is shown on page load.
+      // This is handled by the initial 'active' and 'active-content' classes in HTML,
+      // but this explicit call ensures consistency if the initial setup changes or is dynamic.
+    //switchContent(trendingBtn, popularBtn, trendingContent, popularContent); // Uncomment if needed for more complex initial setup
+    });
+
+
+
+
+
+
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('seriesSearchInput');
+    const autocompleteSuggestions = document.getElementById('autocompleteSuggestions');
+
+    // In a real application, this data would come from your backend/database.
+    // For demonstration, we'll use a hardcoded array of series.
+    const allSeries = [
+       { name: "Hiding a House in the Apocalypse", url: "#" },
+      { name: "The Ultimate Shut-In", url: "#" },
+      { name: "The Greatest Estate Developer", url: "#" },
+      { name: "Foreigner on the Periphery", url: "#" },
+      { name: "Solo Leveling", url: "#" },
+      { name: "Demon Slayer", url: "#" }, // Placeholder URL
+      { name: "Omniscient Reader", url: "#" }, // Placeholder URL
+      { name: "The Reborn Young Lord Is an Assassin", url: "#" }, // Placeholder URL
+      { name: "Devil Returns To School Days", url: "#" }, // Placeholder URL
+      { name: "Get Schooled", url: "#" }, // Placeholder URL
+      { name: "44TH Period : Survial Class", url: "#" }, // Placeholder URL
+      { name: "Teenage Mercenary", url: "#" },
+      { name: "Ordeal", url: "#" },
+      { name: "The Stellar Swordmaster", url: "#" },
+      { name: "The Legendary Hero Is an Academy Honors Student", url: "#" },
+      { name: "The Regressed Mercenary’s Machinations", url: "#" }
+    ];
+
+    searchInput.addEventListener('input', function() {
+      const query = this.value.toLowerCase();
+      autocompleteSuggestions.innerHTML = ''; // Clear previous suggestions
+
+      if (query.length === 0) {
+        autocompleteSuggestions.style.display = 'none';
+        return;
+      }
+
+      const filteredSeries = allSeries.filter(series =>
+        series.name.toLowerCase().includes(query)
+      );
+
+      if (filteredSeries.length > 0) {
+        filteredSeries.forEach(series => {
+          const suggestionItem = document.createElement('a');
+          suggestionItem.href = series.url; // Set the actual URL
+          suggestionItem.classList.add('list-group-item', 'list-group-item-action');
+          suggestionItem.textContent = series.name;
+
+          // Event listener to navigate on click
+          suggestionItem.addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent default link behavior initially
+            searchInput.value = series.name; // Fill input with selected name
+            autocompleteSuggestions.style.display = 'none'; // Hide suggestions
+            window.location.href = series.url; // Navigate to the series page
+          });
+          autocompleteSuggestions.appendChild(suggestionItem);
+        });
+        autocompleteSuggestions.style.display = 'block';
+      } else {
+        autocompleteSuggestions.style.display = 'none';
+      }
+    });
+
+    // Hide suggestions when clicking outside the search input/suggestions
+    document.addEventListener('click', function(event) {
+      if (!searchInput.contains(event.target) && !autocompleteSuggestions.contains(event.target)) {
+        autocompleteSuggestions.style.display = 'none';
+      }
+    });
+
+    // Handle form submission (e.g., if user types full name and presses Enter)
+    // This will navigate if the exact text matches one of the series, otherwise proceed with default form submit.
+    searchInput.closest('form').addEventListener('submit', function(event) {
+      const query = searchInput.value.toLowerCase();
+      const exactMatch = allSeries.find(series => series.name.toLowerCase() === query);
+
+      if (exactMatch) {
+        event.preventDefault(); // Prevent default form submission
+        window.location.href = exactMatch.url; // Navigate to the exact match
+      }
+      // If no exact match, the form will submit normally (e.g., to a general search results page)
+    });
+
+  });
+</script>
+
+<!-- cards -->
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+  <div class="col">
+    <div class="card">
+      <a href="#"><img
+          src="https://i.pinimg.com/1200x/c7/16/49/c7164900da1fca24933a3d004cb0b8d8.jpg" class="card-img-top"
+          alt="Omniscient Reader"></a>
+      <div class="card-body">
+        <a href="#"  style="text-decoration: none; color: inherit;"></a>
+          <h5 class="card-title">Omniscient Reader</h5>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="card">
+      <a href="#"><img
+          src="https://i.pinimg.com/736x/b8/74/4f/b8744f0aa33b86dd36438a799c492646.jpg" class="card-img-top"
+          alt="The Reborn Young Lord Is an Assassin"></a>
+      <div class="card-body">
+        <a href="#"
+          style="text-decoration: none; color: inherit;">
+          <h5 class="card-title">The Reborn Young Lord Is an Assassin</h5>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="card">
+      <a href="#"><img
+          src="https://i.pinimg.com/736x/f4/9a/2e/f49a2e6dfe1db1ee93dad73e2592900e.jpg" class="card-img-top"
+          alt="The Devil Returns To School Days"></a>
+      <div class="card-body">
+        <a href="#"
+          style="text-decoration: none; color: inherit;">
+          <h5 class="card-title">Devil Returns To School Days</h5>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="card">
+      <a href="#"><img
+          src="https://i.pinimg.com/1200x/f7/a4/7e/f7a47e8fe3561133e655f7f2b57d2527.jpg" class="card-img-top"
+          alt="Get Schooled"></a>
+      <div class="card-body">
+        <a href="#"
+          style="text-decoration: none; color: inherit;">
+          <h5 class="card-title">Get Schooled</h5>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="card">
+      <a href="#"><img
+          src="https://i.pinimg.com/736x/eb/ec/04/ebec04178f5d048689a678181700d8e1.jpg" class="card-img-top"
+          alt="44TH Period : Survial Class"></a>
+      <div class="card-body">
+        <a href="#"
+          style="text-decoration: none; color: inherit;">
+          <h5 class="card-title">44TH Period : Survial Class</h5>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="card">
+      <a href="#"><img src="https://i.pinimg.com/736x/93/60/23/9360233f5439b7807b2bccd8729394d9.jpg" class="card-img-top"
+          alt="Teenage Mercenary"></a>
+      <div class="card-body">
+        <a href="#" style="text-decoration: none; color: inherit;">
+          <h5 class="card-title">Teenage Mercenary</h5>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="card">
+      <a href="#"><img src="https://i.pinimg.com/1200x/d7/bb/c7/d7bbc7e7500ca9050a58e136249976e7.jpg" class="card-img-top"
+          alt="Ordeal"></a>
+      <div class="card-body">
+        <a href="#" style="text-decoration: none; color: inherit;">
+          <h5 class="card-title">Ordeal</h5>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="card">
+      <a href="#"><img src="https://i.pinimg.com/736x/bc/3e/93/bc3e93ae72435b730609e8ede8d61b3e.jpg" class="card-img-top"
+          alt="The Stellar Swordmaster"></a>
+      <div class="card-body">
+        <a href="#" style="text-decoration: none; color: inherit;">
+          <h5 class="card-title">The Stellar Swordmaster</h5>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="card">
+      <a href="#"><img src="https://i.pinimg.com/736x/e4/37/13/e43713c667ba0fa2bc1e46ac6bbea8bd.jpg" class="card-img-top"
+          alt="designated-bully"></a>
+      <div class="card-body">
+        <a href="#" style="text-decoration: none; color: inherit;">
+          <h5 class="card-title">The Legendary Hero Is an Academy Honors Student</h5>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="card">
+      <a href="#"><img src="https://i.pinimg.com/736x/4c/ba/e5/4cbae5146dbd2b432e237f8585698528.jpg" class="card-img-top"
+          alt="cryptid"></a>
+      <div class="card-body">
+        <a href="#" style="text-decoration: none; color: inherit;">
+          <h5 class="card-title">The Regressed Mercenary’s Machinations</h5>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="card">
+      <a href="#"><img src="https://i.pinimg.com/1200x/8c/79/e5/8c79e52afc2d86e8d3a0d0cd762b1183.jpg" class="card-img-top"
+          alt="The Great Mage Returns After 4000 Years"></a>
+      <div class="card-body">
+        <a href="#" style="text-decoration: none; color: inherit;">
+          <h5 class="card-title">The Great Mage Returns After 4000 Years</h5>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<!-- footer -->
+<div class="card text-center footer-card">
+  <div class="card-header">Meet WEBTOON at Anime Expo 2025</div>
+  <div class="card-body">
+    <a class="bi bi-instagram" href="https://www.instagram.com/webtoonofficial/"></a>
+    <a class="bi bi-threads" href="https://www.threads.com/@webtoonofficial"></a>
+    <a class="bi bi-facebook" href="https://www.facebook.com/webtoonofficial"></a>
+    <a class="bi bi-github" href="https://github.com/webtoonofficial"></a> <div class="card-body">
+      <a href="webtoonabout.html" class="bt bt-About">About</a>
+      <a href="feedback_webtoon.html" class="bt bt-Feedback">Feedback</a>
+      <a href="help_webtoon.html" class="bt bt-Help">Help</a>
+      <a href="contactpage_wetoon.html" class="bt bt-Contact">Contact</a>
+    </div>
+  </div>
+  <img src="https://1000logos.net/wp-content/uploads/2024/08/Webtoon-Emblem-2048x1152.png" class="LOGO" alt="WEBTOON Logo">
+</div>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+</body>
+
+</html>
